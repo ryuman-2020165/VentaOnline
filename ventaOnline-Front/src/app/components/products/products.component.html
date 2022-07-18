@@ -1,0 +1,132 @@
+
+
+
+
+<div class="text-center m-3">
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">New product</button>
+</div>
+<div class="input-group m-4">
+  <input [(ngModel)]="search" type="text" class="form-control" placeholder="Search an product" aria-label="Recipient's username" aria-describedby="button-addon2">
+  <button class="btn btn-outline-secondary me-5" type="button" id="button-addon2">Button</button>
+</div>
+<hr>
+
+
+
+<h4 class="title">products</h4>
+<div class="row">
+    <div *ngFor="let product of products | search:search" class="card m-4" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">{{product.name}}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">{{product.category.name}}</h6>
+          <p class="card-text">{{product.description}}</p>
+          <p class="card-text">Price: Q {{product.price}}</p>
+          <p class="card-text">Stock: {{product.stock}}</p>
+
+          <button class="btn btn-primary">Add to Shopping Cart</button>
+          <button (click)="getProduct(product._id)" class="btn btn-warning m-2 " 
+          data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" 
+          aria-controls="offcanvasExample">Update</button>
+          <button (click)="deleteProduct(product._id)" class="btn btn-danger">Delete</button>
+          <button class="btn btn-secondary ms-2" [routerLink]="['/user/viewProduct/' + product._id]">View</button>
+        </div>
+      </div>
+</div>
+
+
+
+
+
+
+<!-- Modal Add Product -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add product</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+            <form #addProductForm="ngForm">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Name</label>
+                  <input [(ngModel)]="product.name" name="name" type="name" class="form-control" id="name">
+                  
+                </div>
+
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label">Price</label>
+                  <input [(ngModel)]="product.price" name="price" type="price" class="form-control" id="price">
+                </div>
+
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Stock</label>
+                    <input [(ngModel)]="product.stock" name="stock" type="stock" class="form-control" id="stock">
+                </div>
+
+
+                <label for="exampleInputPassword1" class="form-label">Category</label>
+                <select [(ngModel)]="product.category" name="category" class="form-select" aria-label="Default select example">
+  
+                  <option *ngFor="let category of categories" value="{{category._id}}">{{ category.name }}</option>
+                </select>
+
+              </form>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button (click)="saveProduct(addProductForm)" type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+
+
+
+
+
+
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasExampleLabel">Update Product</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      
+
+      <form (ngSubmit)="updateProduct()" *ngIf="productGetId">
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Name</label>
+          <input [(ngModel)]="productGetId.name" name="name" type="name" class="form-control" id="name">
+          
+        </div>
+
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Price</label>
+          <input [(ngModel)]="productGetId.price" name="price" type="price" class="form-control" id="price">
+        </div>
+
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Stock</label>
+            <input [(ngModel)]="productGetId.stock" name="stock" type="stock" class="form-control" id="stock">
+        </div>
+
+
+        <label for="exampleInputPassword1" class="form-label">Category</label>
+        <select [(ngModel)]="productGetId.category._id" name="category" class="form-select" aria-label="Default select example">
+          <option *ngFor="let category of categories" value="{{category._id}}">{{ category.name }}</option>
+        </select>
+        
+          <button type="submit"  class="btn btn-success mt-4" data-bs-dismiss="offcanvas" aria-label="Close">Update</button>
+        
+        
+      </form>
+
+
+
+    </div>
+  </div>
